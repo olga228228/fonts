@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="КАРАНТИН online - выживайте в мире, захваченном эпидемией грибка, превращающего людей в монстров!">
+    <meta name="keywords" content="зомби-апокалипсис, игра, выживание, кооператив, карантин">
+    <title>КАРАНТИН online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif; /* Запасной шрифт */
+        }
+        body {
+            background-image: url('https://i.ibb.co/wZ4YfrJx/1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.4); /* Оверлей 40% */
+            min-height: 100vh;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .logo {
+            max-width: 300px;
+            height: auto;
+        }
+        .play-button {
+            max-width: 466px;
+            height: auto;
+        }
+        .play-button:hover {
+            animation: pulse 1.5s infinite ease-in-out; /* Только зум */
+        }
+        .new-image {
+            max-width: 466px;
+            height: auto;
+        }
+        .login-button {
+            max-width: 200px;
+            height: auto;
+            position: relative;
+        }
+        .login-button:hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Более тёмный оверлей */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .login-button:hover::before {
+            opacity: 1;
+        }
+        .login-button-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700; /* Bold */
+            color: #000; /* Чёрный текст */
+            font-size: 1.5rem;
+            z-index: 1; /* Текст над оверлеем */
+        }
+        .telegram-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            text-decoration: none;
+        }
+        .telegram-link:hover {
+            color: #8B0000; /* Кроваво-красный при наведении */
+        }
+        .telegram-icon {
+            width: 24px;
+            height: 24px;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        /* Шрифт Downcome */
+        @font-face {
+            font-family: 'Downcome';
+            src: url('https://raw.githubusercontent.com/olga228228/fonts/main/ofont.ru_Downcome.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        /* Шрифт TrueLies */
+        @font-face {
+            font-family: 'TrueLies';
+            src: url('https://raw.githubusercontent.com/olga228228/fonts/main/trueliesrusbylyajka.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        /* Шрифт Roboto Bold */
+        @font-face {
+            font-family: 'Roboto';
+            src: url('https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        .about-text {
+            font-family: 'Downcome', 'Creepster', sans-serif;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+            text-align: left;
+        }
+        .about-section h2 {
+            font-family: 'TrueLies', 'Creepster', sans-serif;
+            text-align: left;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+            color: #8B0000; /* Кроваво-красный */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        header {
+            padding: 1rem 0;
+            background: rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        input, button {
+            padding: 0.75rem;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: 2px solid #8B0000;
+        }
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .about-section {
+            padding: 3rem 0;
+        }
+        footer {
+            padding: 2rem 0;
+            background: rgba(0, 0, 0, 0.5);
+            position: sticky;
+            bottom: 0;
+        }
+        footer p {
+            font-family: Arial, sans-serif; /* Классический шрифт */
+            color: #fff; /* Белый цвет */
+            text-shadow: none; /* Без тени */
+        }
+        footer .links a {
+            font-family: Arial, sans-serif;
+            color: #fff;
+            text-decoration: none;
+        }
+        footer .links a:hover {
+            color: #8B0000; /* Кроваво-красный при наведении */
+        }
+        /* Десктопные стили */
+        @media (min-width: 769px) {
+            header .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .header-left {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+            }
+            .auth-form {
+                width: auto;
+            }
+            .login-button {
+                max-width: 200px;
+            }
+            .login-button-text {
+                font-size: 1.5rem;
+            }
+            .telegram-link {
+                font-size: 1rem;
+            }
+            .about-section h2 {
+                font-size: 3.75rem; /* text-6xl */
+            }
+            .about-text {
+                font-size: 1.875rem; /* text-3xl */
+            }
+            .about-text ul {
+                font-size: 1.5rem; /* text-2xl */
+            }
+            footer .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            .links {
+                display: flex;
+                gap: 1.5rem;
+            }
+            footer p {
+                font-size: 1.25rem; /* text-xl */
+            }
+            footer .links a {
+                font-size: 1rem; /* text-base */
+            }
+        }
+        /* Мобильные стили */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+            .logo {
+                max-width: 150px;
+            }
+            .play-button, .new-image {
+                max-width: 250px;
+            }
+            .login-button {
+                max-width: 150px;
+            }
+            .login-button-text {
+                font-size: 1rem;
+            }
+            .telegram-link {
+                font-size: 0.875rem;
+            }
+            header .container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .header-left {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            .header-right {
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            input, button {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+            .about-section {
+                padding: 1rem 0;
+            }
+            .about-section h2 {
+                font-size: 1.875rem; /* text-3xl */
+                margin-bottom: 1rem;
+                padding-left: 0.5rem;
+            }
+            .about-text {
+                font-size: 1.5rem; /* text-2xl */
+                padding: 1rem;
+            }
+            .about-text ul {
+                font-size: 1.25rem; /* text-xl */
+            }
+            footer {
+                padding: 1rem 0;
+            }
+            footer .container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .links {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: center;
+            }
+            footer p {
+                font-size: 1rem; /* text-base */
+            }
+            footer .links a {
+                font-size: 0.875rem; /* text-sm */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <div class="header-left">
+                    <img src="https://i.ibb.co/Kx5YH0VS/480-94-3.png" alt="КАРАНТИН online Logo" class="logo" loading="lazy">
+                    <a href="#play">
+                        <img src="https://i.ibb.co/8nZwGCyJ/icons8-50-Photoroom.png" alt="Play Button" class="play-button" loading="lazy">
+                    </a>
+                    <img src="https://i.ibb.co/LdszTQNh/1-Photoroom.png" alt="Additional Image" class="new-image" loading="lazy">
+                </div>
+                <div class="header-right">
+                    <form class="auth-form" aria-label="Форма авторизации">
+                        <input type="email" id="email" class="rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-600" placeholder="Почта" aria-label="Электронная почта">
+                        <input type="password" id="password" class="rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-600" placeholder="Пароль" aria-label="Пароль">
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="remember" class="h-4 w-4 text-red-600" aria-label="Запомнить меня">
+                            <span class="text-sm">Запомнить меня</span>
+                        </label>
+                        <button type="submit" class="relative">
+                            <img src="https://i.ibb.co/PGbbCccy/image.png" alt="Login Button" class="login-button" loading="lazy">
+                            <span class="login-button-text">Вход</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Section -->
+        <main class="container py-8 flex-1">
+            <!-- About Section -->
+            <section id="about" class="about-section">
+                <h2 class="font-bold pl-4">НАЙДИ ВАКЦИНУ...<br>ИЛИ ЗАРАЗИ ВСЕХ</h2>
+                <div class="max-w-4xl about-text pl-4">
+                    <p class="mb-4">Survival-RPG от независимых разработчиков. Забудьте все, что слышали об онлайновых играх — здесь вас ждут только хардкор и выживание.</p>
+                    <p class="mb-2">Особенности игры:</p>
+                    <ul class="list-disc list-inside mb-4">
+                        <li>Уникальный геймплей за человека и зомби</li>
+                        <li>Открытый, динамически меняющийся мир</li>
+                        <li>Свободная торговля, PvP и лут</li>
+                        <li>Инновационная система крафта</li>
+                        <li>Война кланов за территорию</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container text-center">
+                <p>Quarantine: All Rights Reserved</p>
+                <div class="links">
+                    <a href="https://t.me/quarantinegame" class="telegram-link">
+                        <img src="https://img.icons8.com/?size=100&id=lUktdBVdL4Kb&format=png&color=000000" alt="Telegram Icon" class="telegram-icon" loading="lazy">
+                        <span>Telegram</span>
+                    </a>
+                    <a href="#" class="text-red-400 hover:text-red-600">Политика конфиденциальности</a>
+                    <a href="#" class="text-red-400 hover:text-red-600">Условия использования</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
